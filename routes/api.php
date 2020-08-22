@@ -12,6 +12,10 @@ use Illuminate\Http\Request;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
+// Authors
+Route::apiResource('authors', 'AuthorsController');
+
+
 Route::middleware('auth:api')->prefix('v1')->group(function(){
     Route::get('/user', function (Request $request) {
     return $request->user();

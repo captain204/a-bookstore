@@ -4,6 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Author;
 use Illuminate\Http\Request;
+use App\Http\Resources\AuthorsResource;
+use App\Http\Resources\AuthorsCollection;
+use App\Http\Requests\createAuthorRequest;
+use App\Http\Requests\UpdateAuthorRequest;
+
 
 class AuthorsController extends Controller
 {
