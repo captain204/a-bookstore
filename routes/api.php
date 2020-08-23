@@ -13,7 +13,7 @@ use Illuminate\Http\Request;
 |
 */
 // Authors
-Route::apiResource('authors', 'AuthorsController');
+#Route::apiResource('authors', 'AuthorsController');
 
 
 Route::middleware('auth:api')->prefix('v1')->group(function(){
