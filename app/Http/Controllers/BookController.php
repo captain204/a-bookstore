@@ -1,9 +1,10 @@
 <?php
 
 namespace App\Http\Controllers;
-
 use App\Book;
 use Illuminate\Http\Request;
+use App\Http\Resources\BooksResource;
+use App\Http\Resources\BooksCollection;
 
 class BookController extends Controller
 {
@@ -14,7 +15,8 @@ class BookController extends Controller
      */
     public function index()
     {
-        //
+        $books = Book::all();
+        return new BooksCollection($books);
     }
 
     /**
@@ -46,7 +48,8 @@ class BookController extends Controller
      */
     public function show(Book $book)
     {
-        //
+        
+        return new BooksResource($book);
     }
 
     /**

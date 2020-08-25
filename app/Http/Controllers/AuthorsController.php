@@ -19,12 +19,8 @@ class AuthorsController extends Controller
      */
     public function index()
     {
-        $authors = QueryBuilder::for(Author::class)->allowedSorts([
-            'name',
-            'created_at',
-            'updated_at',
-        ])->jsonPaginate();
-        return new AuthorsCollection($authors);
+        $authors = Author::all();
+        return AuthorsResource::collection($authors);
     }
 
     /**
