@@ -12,6 +12,7 @@ class BooksCollection extends ResourceCollection
      * @param  \Illuminate\Http\Request  $request
      * @return array
      */
+    public $collects = BooksResource::class;
 
     public function toArray($request)
     {

@@ -1,13 +1,13 @@
 <?php
 
 namespace Tests\Feature;
+
 use App\Book;
 use App\User;
+use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Support\Carbon;
 use Laravel\Passport\Passport;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Tests\TestCase;
-
 
 class BooksTest extends TestCase
 {
@@ -16,7 +16,6 @@ class BooksTest extends TestCase
 
         /**
         *@test
-        *@watch
         */
         public function it_returns_an_book_as_a_resource_object()
         {
@@ -51,49 +50,50 @@ class BooksTest extends TestCase
         public function
         it_returns_all_books_as_a_collection_of_resource_objects()
         {
+            $books = factory(Book::class, 3)->create();
             $user = factory(User::class)->create();
             Passport::actingAs($user);
-            $books = factory(Book::class, 3)->create();
-            $this->get('/api/v1/books', [
-                'accept' => 'application/vnd.api+json',
-                'content-type' => 'application/vnd.api+json',
-            ])->assertStatus(200)->assertJson([
-                 "data" => [
+            $this->get('/api/v1/books')->assertStatus(200)->assertJson([
+                 "data"=>[
                                 [
                                         "id" => '1',
                                         "type" => "books",
                                         "attributes" => [
-                                        'title' => $books[0]->title,
-                                        'description' => $books[0]->description,
-                                        'publication_year' => $books[0]->publication_year,
-                                        'created_at' => $books[0]->created_at->toJSON(),
-                                        'updated_at' => $books[0]->updated_at->toJSON(),
+                                            'title' => $books[0]->title,
+                                            'description' => $books[0]->description,
+                                            'publication_year' => $books[0]->publication_year,
+                                            'created_at' => $books[0]->created_at->toJSON(),
+                                            'updated_at' => $books[0]->updated_at->toJSON(),
                                     ]
                                 ],
 
+                                
                                 [
                                     "id" => '2',
                                     "type" => "books",
                                     "attributes" => [
-                                    'title' => $books[1]->title,
-                                    'description' => $books[1]->description,
-                                    'publication_year' => $books[1]->publication_year,
-                                    'created_at' => $books[1]->created_at->toJSON(),
-                                    'updated_at' => $books[1]->updated_at->toJSON(),
+                                        'title' => $books[1]->title,
+                                        'description' => $books[1]->description,
+                                        'publication_year' => $books[1]->publication_year,
+                                        'created_at' => $books[1]->created_at->toJSON(),
+                                        'updated_at' => $books[1]->updated_at->toJSON(),
                                     ]
                                 ],
+
+                                
                                 [
                                     "id" => '3',
                                     "type" => "books",
                                     "attributes" => [
-                                    'title' => $books[2]->title,
-                                    'description' => $books[2]->description,
-                                    'publication_year' => $books[2]->publication_year,
-                                    'created_at' => $books[2]->created_at->toJSON(),
-                                    'updated_at' => $books[2]->updated_at->toJSON(),
+                                        'title' => $books[2]->title,
+                                        'description' => $books[2]->description,
+                                        'publication_year' => $books[2]->publication_year,
+                                        'created_at' => $books[2]->created_at->toJSON(),
+                                        'updated_at' => $books[2]->updated_at->toJSON(),
+                            
                                     ]
-                                ],
 
+                                ],
                         ]
                 ]);
         }
