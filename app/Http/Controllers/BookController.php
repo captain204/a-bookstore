@@ -15,8 +15,13 @@ class BookController extends Controller
      */
     public function index()
     {
-        $books = Book::all();
-        return new BooksCollection($books);
+            $books = QueryBuilder::for(Book::class)->allowedSorts([
+                'title',
+                'publication_year',
+                'created_at',
+                'updated_at',
+            ])->jsonPaginate();
+            return new BooksCollection($books);
     }
 
     /**
