@@ -40,9 +40,20 @@ class BookController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(CreateBookRequest $request)
     {
-        //
+        $book = Book::create([
+            'title' => $request->input('data.attributes.title'),
+            'description' => $request->input('data.attributes.
+            description'),
+            'publication_year' => $request->input('data.attributes.
+            publication_year'),
+            ]);
+            return (new BooksResource($book))
+            ->response()
+            ->header('Location', route('books.show', [
+            'book' => $book,
+        ]));
     }
 
     /**
