@@ -638,10 +638,104 @@ class BooksTest extends TestCase
                 ]);
          }
 
+         /**
+          * @test
+         */
+        public function it_validates_that_the_attributes_member_has_been_given_when_creating_an_book()
+        {
+                $user = factory(User::class)->create();
+                Passport::actingAs($user);
+                $this->postJson('/api/v1/books', [
+                    'data' =>   [
+                            'type' => 'books',
+                            ]
+                        ], 
+                        [
+                        'accept' => 'application/vnd.api+json',
+                        'content-type' => 'application/vnd.api+json',
+                        ])->assertStatus(422)
+                        ->assertJson([
+                            'errors' => [
+                                    [
+                                        'title' => 'Validation Error',
+                                        'details' => 'The data.attributes field is
+                                        required.',
+                                        'source' => [
+                                        'pointer' => '/data/attributes',
+                                        ]
+                                    ]
+                            ]
+                    ]);
+            }
+
+            /**
+            * @test
+            */
+            public function it_validates_that_the_attributes_member_is_an_object_given_when_creating_an_object()
+            {
+                $user = factory(User::class)->create();
+                Passport::actingAs($user);
+                $this->postJson('/api/v1/books', [
+                            'data' => [
+                                    'type' => 'books',
+                                    'attributes' => 'this is not an object'
+                                ]
+                            ], [
+                            'accept' => 'application/vnd.api+json',
+                            'content-type' => 'application/vnd.api+json',
+                            ])
+                            ->assertStatus(422)
+                            ->assertJson([
+                                    'errors' => [
+                                    [
+                                    'title' => 'Validation Error',
+                                    'details' => 'The data.attributes must be an
+                                    array.',
+                                    'source' => [
+                                    'pointer' => '/data/attributes',
+                                    ]
+                            ]
+                        ]
+                ]);
+
+            }
+            
+            /**
+            * @test
+            */
+            public function it_validates_that_a_title_attribute_is_given_when_creating_an_book()
+            {
+                $user = factory(User::class)->create();
+                Passport::actingAs($user);
+                $this->postJson('/api/v1/books', [
+                                                'data' => [
+                                                'type' => 'books',
+                                                'attributes' => [
+                                                'description' => 'A book about API development',
+                                                'publication_year' => '2019',
+                                                ]
+                                    ]
+                                ], [
+                                    'accept' => 'application/vnd.api+json',
+                                    'content-type' => 'application/vnd.api+json',
+                                    ])
+                                    ->assertStatus(422)
+                                    ->assertJson([
+                                    'errors' => [
+                                    [
+                                    'title' => 'Validation Error',
+                                    'details' => 'The data.attributes.title field is
+                                    required.',
+                                    'source' => [
+                                    'pointer' => '/data/attributes/title',
+                                    ]
+                                ]
+                            ]
+                    ]);
+            }
 
 
-
-
+  
 }
 
 
