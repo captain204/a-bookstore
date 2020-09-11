@@ -4,6 +4,10 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
+use App\Http\Resources\AuthorsIdentifierResource;
+
+
+
 class BooksResource extends JsonResource
 {
     /**
@@ -18,15 +22,37 @@ class BooksResource extends JsonResource
                 'id' => (string)$this->id,
                 'type' => 'books',
                 'attributes' => [
-                    'title' => $this->title,
-                    'description' => $this->description,
-                    'publication_year' => $this->publication_year,
-                    'created_at' => $this->created_at,
-                    'updated_at' => $this->updated_at,
-                ]
+                                'title' => $this->title,
+                                'description' => $this->description,
+                                'publication_year' => $this->publication_year,
+                                'created_at' => $this->created_at,
+                                'updated_at' => $this->updated_at,
+                                ],
+                'relationships' => [
+                                    'authors' => [
+                                    'links' => [
+                                        'self' => route(
+                                                    'books.relationships.authors',
+                                                    ['id' => $this->id]
+                                                ),
+                                    'related' => route(
+                                                        'books.authors',
+                                                        ['id' => $this->id]
+                                                ),
+                                    ],
+                                    'data'=>AuthorsIdentifierResource::collection(
+                                        $this->authors
+                                    ),
+                                ],
+                    ]
+
             ];
         
     }
+
+
+
+    
 
 
 }

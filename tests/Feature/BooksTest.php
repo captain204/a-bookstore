@@ -137,8 +137,7 @@ class BooksTest extends TestCase
                         "attributes" => [
                         'title' => 'Building an API with Laravel',
                         'description' => $books[0]->description,
-                        'publication_year' => $books[0]->
-                        publication_year,
+                        'publication_year' => $books[0]->publication_year,
                         'created_at' => $books[0]->created_at->toJSON(),
                         'updated_at' => $books[0]->updated_at->toJSON(),
                         ]
@@ -149,8 +148,7 @@ class BooksTest extends TestCase
                         "attributes" => [
                         'title' => 'Classes are our blueprints',
                         'description' => $books[1]->description,
-                        'publication_year' => $books[1]->
-                        publication_year,
+                        'publication_year' => $books[1]->publication_year,
                         'created_at' => $books[1]->created_at->toJSON(),
                         'updated_at' => $books[1]->updated_at->toJSON(),
                         ]
@@ -300,7 +298,9 @@ class BooksTest extends TestCase
         }
 
 
-
+        /**
+        * @test
+        */
         public function it_can_sort_books_by_multiple_attributes_through_a_sort_query_parameter()
         {
             $user = factory(User::class)->create();
@@ -365,8 +365,7 @@ class BooksTest extends TestCase
         }
 
         /**
-        * @test
-        * 
+        * @test 
         */
         public function it_can_sort_books_by_multiple_attributes_in_descending_order_through_a_sort_()
         {
@@ -516,7 +515,6 @@ class BooksTest extends TestCase
 
         /**
         * @test
-        * @watch
         */
         public function it_can_create_an_book_from_a_resource_object()
         {
@@ -558,6 +556,9 @@ class BooksTest extends TestCase
                         'publication_year' => '2019',
                 ]);
         }
+        /**
+        * @test
+        */
         
         public function it_validates_that_the_type_member_is_given_when_creating_an_book()
         {
@@ -598,7 +599,6 @@ class BooksTest extends TestCase
 
         /**
         * @test
-        * @watch
         */
         public function it_validates_that_the_type_member_has_the_value_of_books_when_creating_an_()
         {
@@ -734,6 +734,23 @@ class BooksTest extends TestCase
                     ]);
             }
 
+            /**
+            * @test
+            */
+            public function it_can_delete_an_book_through_a_delete_request()
+            {
+                $user = factory(User::class)->create();
+                Passport::actingAs($user);
+                $book = factory(Book::class)->create();
+                $this->delete('/api/v1/books/1',[], [
+                'accept' => 'application/vnd.api+json',
+                'content-type' => 'application/vnd.api+json',])
+                ->assertStatus(204);
+                $this->assertDatabaseMissing('books', [
+                'id' => 1,
+                'title' => $book->title,
+                ]);
+            }
 
   
 }
