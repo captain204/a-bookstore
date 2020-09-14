@@ -64,8 +64,10 @@ class BookController extends Controller
      */
     public function show(Book $book)
     {
-        
-        return new BooksResource($book);
+        $query = QueryBuilder::for(Book::where('id', $book))
+        ->allowedIncludes('authors')
+        ->firstOrFail();   
+        return new BooksResource($query);
     }
 
     /**

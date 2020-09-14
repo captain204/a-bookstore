@@ -40,9 +40,8 @@ class BooksResource extends JsonResource
                                                         ['id' => $this->id]
                                                 ),
                                     ],
-                                    'data'=>AuthorsIdentifierResource::collection(
-                                        $this->authors
-                                    ),
+                                    'data' => AuthorsIdentifierResource::collection(
+                                    $this->whenLoaded('authors')),
                                 ],
                     ]
 

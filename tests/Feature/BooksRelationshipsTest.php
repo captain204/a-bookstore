@@ -16,7 +16,6 @@ class BooksRelationshipsTest extends TestCase
 
     /**
     * @test
-    * @watch
     */
     public function it_returns_a_relationship_to_authors_adhering_to_json_api_spec()
     {
@@ -63,6 +62,35 @@ class BooksRelationshipsTest extends TestCase
 
     }
 
+    /**
+    * @test
+    * @watch
+    */
+    public function
+    it_can_remove_all_relationships_to_authors_with_an_empty_collection()
+    {
+        $book = factory(Book::class)->create();
+        $authors = factory(Author::class, 3)->create();
+        $book->authors()->sync($authors->pluck('id'));
+        $user = factory(User::class)->create();
+        Passport::actingAs($user);
+        $this->patchJson('/api/v1/books/1/relationships/authors',[
+            'data' => []
+        ], [
+            'accept' => 'application/vnd.api+json',
+            'content-type' => 'application/vnd.api+json',
+        ])->assertStatus(204);
+        $this->assertDatabaseMissing('author_book', [
+            'author_id' => 1,
+            'book_id' => 1,
+        ])->assertDatabaseMissing('author_book', [
+            'author_id' => 2,
+            'book_id' => 1,
+        ])->assertDatabaseMissing('author_book', [
+            'author_id' => 3,
+            'book_id' => 1,
+        ]);
+    }
 
 
 }
